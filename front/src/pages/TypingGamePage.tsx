@@ -1,7 +1,9 @@
 import { FC, memo } from "react";
 import { Footer, Header } from "../components/organisms/layout";
+// import { useGetTypingGameData } from "../hooks/useGetTypingGameData";
 
 export const TypingGamePage: FC = memo(() => {
+  // const { problem, correctCommand, getTypingGameData } = useGetTypingGameData();
   return (
     <div>
       <Header />
