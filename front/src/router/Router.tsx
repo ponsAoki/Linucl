@@ -7,7 +7,7 @@ export const Router: FC = memo(() => {
     <Routes>
       <Route path="/" element={<TopPage />} />
         <Route path="home" element={<HomePage />} />
-        <Route path="typing_game" element={<TypingGamePage />} />
+        <Route path="typing-game" element={<TypingGamePage />} />
         <Route path="*" element={<Page404 />} />
       <Route path="*" element={<Page404 />} />
     </Routes>
