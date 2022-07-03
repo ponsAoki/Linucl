@@ -20,15 +20,18 @@ export const TypingGamePage: FC = memo(() => {
       <div className="bg-gray-100 py-16">
         <div className="box-border border-4 rounded-lg outline-none w-2/3 px-8 py-12 mx-auto my-16 text-center">
           <p className="text-2xl mb-12">{problem}</p>
-          <form method="post" onSubmit={matchingAnswer}>
-            <input
-              type="text"
-              name="answer"
-              placeholder="解答欄"
-              className="outline-none rounded-md text-center text-3xl my-12"
-              ref={ref}
-            />
-          </form>
+            <form method="post" onSubmit={matchingAnswer}>
+              <div className="bg-black flex items-center h-24 w-full px-2">
+                <p className="text-white text-4xl">guest@localhost&nbsp;~&nbsp;$</p>
+                <input
+                  type="text"
+                  name="answer"
+                  autoFocus={true}
+                  className="outline-none bg-black text-start text-white w-full text-4xl mr-auto pl-2"
+                  ref={ref}
+                />
+              </div>
+            </form>
           <div className="mt-12">タイムゲージ</div>
         </div>
       </div>
