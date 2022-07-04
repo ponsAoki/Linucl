@@ -7,7 +7,7 @@ export const HomePage: FC = memo(() => {
   return (
     <div className="overflow-x-hidden">
       <Header />
-        <div className="bg-gray-100 py-16">
+        <div className="bg-zinc-900 py-12">
           <ul>
             <li>
             <LessonBox outline="レベル1" content="・・・" />
