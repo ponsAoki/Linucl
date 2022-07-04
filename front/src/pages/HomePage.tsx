@@ -5,7 +5,7 @@ import { LessonBox } from "../components/organisms/LessonBox";
 
 export const HomePage: FC = memo(() => {
   return (
-    <div>
+    <div className="overflow-x-hidden">
       <Header />
         <div className="bg-gray-100 py-16">
           <ul>
