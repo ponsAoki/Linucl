@@ -20,7 +20,7 @@ export const TypingGamePage: FC = memo(() => {
   }, []);
 
   return (
-    <div>
+    <div className="overflow-x-hidden">
       <Header />
       <div className="bg-gray-100 py-16">
         <div className="box-border border-4 rounded-lg outline-none w-2/3 px-8 py-12 mx-auto my-24 text-center">
