@@ -1,5 +1,6 @@
 import { FC, memo } from "react";
 import { NavigateFunction, useNavigate } from "react-router";
+import { Link } from "react-router-dom";
 
 import { Footer, Header } from "../components/organisms/layout";
 
@@ -14,7 +15,7 @@ export const TopPage: FC = memo(() => {
             <h1 className="font-black text-7xl px-4">Linucl</h1>
             <ul className="my-12">
               <li>
-                <button className="text-white font-bold w-48 rounded-lg bg-blue-400 px-4 py-2 mb-4 hover:opacity-80">登録して始める</button>
+                <button className="text-white font-bold w-48 rounded-lg bg-blue-400 px-4 py-2 mb-4 hover:opacity-80">ログイン</button>
               </li>
               <li>
                 <button
@@ -25,7 +26,10 @@ export const TopPage: FC = memo(() => {
                 </button>
               </li>
             </ul>
-            <div>登録はこちら</div>
+            <div>
+              登録は
+                <Link to="#" className="text-blue-500 hover:opacity-80">こちら</Link>
+            </div>
           </div>
         </div>
       </div>
