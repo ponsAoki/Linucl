@@ -1,6 +1,6 @@
 package models
 
 type Command struct {
-	questionId string `json:"questionId" bson:"questionId"`
-	command    string `json:"command" bson:"command"`
+	Number   int    `json:"number" bson:"number"`
+	ACommand string `json:"command" bson:"command"`
 }
