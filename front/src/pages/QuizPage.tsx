@@ -11,6 +11,7 @@ export const QuizPage: FC = memo(() => {
   useEffect(() => {
     getQuizData()
       .then(() => startTimer());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
