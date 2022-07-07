@@ -18,9 +18,10 @@ var (
 	commandservice    services.CommandService
 	commandconrtoller controllers.CommandController
 	ctx               context.Context
-	commandcollection *mongo.Collection
-	mongoclient       *mongo.Client
-	err               error
+	// connectedCollection *mongo.Collection
+	connectedDB *mongo.Database
+	mongoclient *mongo.Client
+	err         error
 )
 
 func init() {
@@ -38,16 +39,18 @@ func init() {
 
 	fmt.Println("mongo connection established")
 
-	commandcollection = mongoclient.Database("golangDB").Collection("コマンド")
-	commandservice = services.NewCommandService(commandcollection, ctx)
+	//ここ重要
+	//golangDBに接続までを初期設定とする
+	connectedDB = mongoclient.Database("golangDB")
+	commandservice = services.NewCommandService(connectedDB, ctx)
 	commandconrtoller = controllers.New(commandservice)
 	server = gin.Default()
 }
 
-//v1/api/typingGame
 func main() {
 	defer mongoclient.Disconnect(ctx)
 
+	//baseURL決定
 	basepath := server.Group("/v1")
 	commandconrtoller.RegisterApiRoutes(basepath)
 
