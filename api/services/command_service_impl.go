@@ -9,52 +9,87 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-func NewCommandService(commandcollection *mongo.Collection, ctx context.Context) CommandService {
+func NewCommandService(connectedDB *mongo.Database, ctx context.Context) CommandService {
 	return &CommandServiceImpl{
-		commandcollection: commandcollection,
-		ctx:               ctx,
+		connectedDB: connectedDB,
+		ctx:         ctx,
 	}
 }
 
 type CommandServiceImpl struct {
-	commandcollection *mongo.Collection
-	ctx               context.Context
+	connectedDB *mongo.Database
+	ctx         context.Context
 }
 
-//db.collection.find({name: "somothing"})
-func (cm *CommandServiceImpl) GetCommand(command *string) (*models.Command, error) {
-	var resCommand *models.Command
-	query := bson.D{bson.E{Key: "command", Value: command}}
-	//FindOneでとってきたjsonを、DecodeでresCommandに格納
-	err := cm.commandcollection.FindOne(cm.ctx, query).Decode(&resCommand)
-	return resCommand, err
-}
+func (cm *CommandServiceImpl) GetTaskSet(collection *string) ([]*models.Task, error) {
+	//DBからとってきた配列を格納するための空スライス
+	var tasks []*models.Task
 
-func (cm *CommandServiceImpl) GetAll() ([]*models.Command, error) {
-	var commands []*models.Command
-	cursor, err := cm.commandcollection.Find(cm.ctx, bson.D{})
+	//ランダムなコレクションから全件取得
+	cursor, err := cm.connectedDB.Collection(*collection).Find(cm.ctx, bson.D{})
 	if err != nil {
 		return nil, err
 	}
-	//コマンド1つ1つを新しいスライスに格納していく
+
+	//cursor.Next()で1つ1つのデータに対して処理していく
+	//コマンド1つ1つをtasksスライスに格納していく
 	for cursor.Next(cm.ctx) {
-		var command models.Command
-		err := cursor.Decode(&command)
+		var task models.Task
+		//DecodeでJSON=>構造体に変換
+		err := cursor.Decode(&task)
 		if err != nil {
 			return nil, err
 		}
-		commands = append(commands, &command)
+		tasks = append(tasks, &task)
 	}
 
-	//上記のforで反復中にエラーが生じたときの処理
+	//上記のforの反復中にエラーが生じたときの処理
 	if err := cursor.Err(); err != nil {
 		return nil, err
 	}
 
 	cursor.Close(cm.ctx)
 
-	if len(commands) == 0 {
+	if len(tasks) == 0 {
 		return nil, errors.New("documents not found")
 	}
-	return commands, nil
+
+	return tasks, nil
 }
+
+//以前の全件取得
+// func (cm *CommandServiceImpl) GetAll() ([]*models.Command, error) {
+// 	var commands []*models.Command
+// 	cursor, err := cm.commandcollection.Find(cm.ctx, bson.D{})
+// 	if err != nil {
+// 		return nil, err
+// 	}
+// 	// fmt.Printf("%s\n", *cursor)
+
+// 	//cursor.Next()で1つ1つのデータに対して処理していく
+// 	//コマンド1つ1つを新しいスライスに格納していく
+// 	for cursor.Next(cm.ctx) {
+// 		var command models.Command
+// 		err := cursor.Decode(&command)
+// 		if err != nil {
+// 			return nil, err
+// 		}
+// 		commands = append(commands, &command)
+// 	}
+
+// 	//上記のforで反復中にエラーが生じたときの処理
+// 	if err := cursor.Err(); err != nil {
+// 		return nil, err
+// 	}
+
+// 	cursor.Close(cm.ctx)
+
+// 	if len(commands) == 0 {
+// 		return nil, errors.New("documents not found")
+// 	}
+
+// 	results, _ := json.Marshal(commands)
+// 	fmt.Print(commands)
+// 	fmt.Printf("%s\n", results)
+// 	return commands, nil
+// }

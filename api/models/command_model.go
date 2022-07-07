@@ -1,6 +1,6 @@
 package models
 
-type Command struct {
-	Number   int    `json:"number" bson:"number"`
-	ACommand string `json:"command" bson:"command"`
+type Task struct {
+	Desc   string `json:"desc" bson:"desc"`
+	Answer string `json:"answer" bson:"answer"`
 }

@@ -2,7 +2,8 @@ package services
 
 import "example.com/go-apis/models"
 
+//インターフェース: メソッドの一覧を定義した型
 type CommandService interface {
-	GetCommand(*string) (*models.Command, error)
-	GetAll() ([]*models.Command, error)
+	GetTaskSet(*string) ([]*models.Task, error)
+	// GetAll() ([]*models.Task, error)
 }
