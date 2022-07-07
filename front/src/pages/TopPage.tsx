@@ -17,7 +17,8 @@ export const TopPage: FC = memo(() => {
           className="box-content w-full p-4 border-0 mx-auto justify-center relative h-screen"
         >
           <div className="text-center pt-12">
-            <h1 className="text-white md:text-8xl sm:text-7xl text-6xl px-4 font-black">L&thinsp;I&thinsp;N&thinsp;U&thinsp;C&thinsp;L</h1>
+            <h1 className="text-white md:text-8xl sm:text-7xl text-6xl px-4 font-black mt-20 mb-16">L&thinsp;I&thinsp;N&thinsp;U&thinsp;C&thinsp;L</h1>
+            <h3 className="text-white md:text-2xl sm:text-xl text-lg px-4 font-black mt-16 mb-24">Linuxのコマンドを練習するタイピングゲーム</h3>
             <ul className="my-12">
               <li className="my-8">
                 <button
@@ -36,7 +37,7 @@ export const TopPage: FC = memo(() => {
                 </button>
               </li>
             </ul>
-            <div className="text-white">
+            <div className="text-white mt-20">
               登録は
                 <Link to="#" className="text-blue-500 hover:opacity-80">こちら</Link>
             </div>

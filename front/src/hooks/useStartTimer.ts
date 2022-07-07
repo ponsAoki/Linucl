@@ -12,7 +12,8 @@ export const useStartTimer = () => {
         setTimeLimit(0);
         clearInterval(timerId);
       }
-    }, 100)
+    }, 50)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return { timeLimit, startTimer }
 }
