@@ -14,10 +14,10 @@ import (
 )
 
 var (
-	server            *gin.Engine
-	commandservice    services.CommandService
-	commandconrtoller controllers.CommandController
-	ctx               context.Context
+	server        *gin.Engine
+	apiservice    services.ApiService
+	apiconrtoller controllers.ApiController
+	ctx           context.Context
 	// connectedCollection *mongo.Collection
 	connectedDB *mongo.Database
 	mongoclient *mongo.Client
@@ -42,8 +42,8 @@ func init() {
 	//ここ重要
 	//golangDBに接続までを初期設定とする
 	connectedDB = mongoclient.Database("golangDB")
-	commandservice = services.NewCommandService(connectedDB, ctx)
-	commandconrtoller = controllers.New(commandservice)
+	apiservice = services.NewApiService(connectedDB, ctx)
+	apiconrtoller = controllers.New(apiservice)
 	server = gin.Default()
 }
 
@@ -52,7 +52,7 @@ func main() {
 
 	//baseURL決定
 	basepath := server.Group("/v1")
-	commandconrtoller.RegisterApiRoutes(basepath)
+	apiconrtoller.RegisterApiRoutes(basepath)
 
 	log.Fatal(server.Run("localhost:8000"))
 }

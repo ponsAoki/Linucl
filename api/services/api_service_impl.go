@@ -9,19 +9,19 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-func NewCommandService(connectedDB *mongo.Database, ctx context.Context) CommandService {
-	return &CommandServiceImpl{
+func NewApiService(connectedDB *mongo.Database, ctx context.Context) ApiService {
+	return &ApiServiceImpl{
 		connectedDB: connectedDB,
 		ctx:         ctx,
 	}
 }
 
-type CommandServiceImpl struct {
+type ApiServiceImpl struct {
 	connectedDB *mongo.Database
 	ctx         context.Context
 }
 
-func (cm *CommandServiceImpl) GetTaskSet(collection *string) ([]*models.Task, error) {
+func (cm *ApiServiceImpl) GetTaskSet(collection *string) ([]*models.Task, error) {
 	//DBからとってきた配列を格納するための空スライス
 	var tasks []*models.Task
 
