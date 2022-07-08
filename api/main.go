@@ -4,55 +4,72 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"time"
 
+	"example.com/go-apis/configs"
 	"example.com/go-apis/controllers"
 	"example.com/go-apis/services"
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	"go.mongodb.org/mongo-driver/mongo/readpref"
 )
 
 var (
-	server        *gin.Engine
+	// server        *gin.Engine
 	apiservice    services.ApiService
 	apiconrtoller controllers.ApiController
 	ctx           context.Context
 	// connectedCollection *mongo.Collection
 	connectedDB *mongo.Database
 	mongoclient *mongo.Client
-	err         error
+	// err         error
 )
 
-func init() {
-	ctx = context.TODO()
-
-	mongoconn := options.Client().ApplyURI("mongodb://localhost:27017")
-	mongoclient, err = mongo.Connect(ctx, mongoconn)
+func ConnectDB() *mongo.Client {
+	//以下、MongoDBAtlasつなぐときの慣例みたいなやつ
+	mongoclient, err := mongo.NewClient(options.Client().ApplyURI(configs.EnvMongoURI()))
 	if err != nil {
 		log.Fatal(err)
 	}
-	err = mongoclient.Ping(ctx, readpref.Primary())
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	err = mongoclient.Connect(ctx)
+	if err != nil {
+		log.Fatal(err)
+	}
+	err = mongoclient.Ping(ctx, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	fmt.Println("mongo connection established")
 
-	//ここ重要
-	//golangDBに接続までを初期設定とする
-	connectedDB = mongoclient.Database("golangDB")
-	apiservice = services.NewApiService(connectedDB, ctx)
-	apiconrtoller = controllers.New(apiservice)
-	server = gin.Default()
+	return mongoclient
+
 }
 
 func main() {
+	router := gin.Default()
+
+	//ConnectDB()で返されたmongoclientをclientに格納
+	client := ConnectDB()
+
+	//ここ重要
+	//golangDBに接続までを初期設定とする
+	connectedDB = client.Database("golangDB")
+	apiservice = services.NewApiService(connectedDB, ctx)
+	apiconrtoller = controllers.New(apiservice)
+
+	//これよく解ってない
 	defer mongoclient.Disconnect(ctx)
 
 	//baseURL決定
-	basepath := server.Group("/v1")
+	basepath := router.Group("/v1")
 	apiconrtoller.RegisterApiRoutes(basepath)
 
-	log.Fatal(server.Run("localhost:8000"))
+	//ポート番号8000番に接続
+	log.Fatal(router.Run("localhost:8000"))
 }
+
+//main.goこんなに長くせず、ConnectDB()部分他のファイルに移した方がいいかも
