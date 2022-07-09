@@ -10,17 +10,17 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type CommandController struct {
-	CommandService services.CommandService
+type ApiController struct {
+	ApiService services.ApiService
 }
 
-func New(commandservice services.CommandService) CommandController {
-	return CommandController{
-		CommandService: commandservice,
+func New(apiservice services.ApiService) ApiController {
+	return ApiController{
+		ApiService: apiservice,
 	}
 }
 
-func (cmc *CommandController) GetTaskSet(ctx *gin.Context) {
+func (cmc *ApiController) GetTaskSet(ctx *gin.Context) {
 	//["A", "B", "C"]のスライスの中からランダムに1個取得
 	collections := []string{"A", "B", "C"}
 	rand.Seed(time.Now().UnixNano())
@@ -33,7 +33,7 @@ func (cmc *CommandController) GetTaskSet(ctx *gin.Context) {
 	collectionName := collections[collectionIndex]
 	fmt.Println(collectionName)
 	//ランダムに取得したコレクション名をGetTaskSet()関数に引数として渡す
-	collection, err := cmc.CommandService.GetTaskSet(&collectionName)
+	collection, err := cmc.ApiService.GetTaskSet(&collectionName)
 
 	if err != nil {
 		ctx.JSON(http.StatusBadGateway, gin.H{"message": err.Error()})
@@ -51,7 +51,7 @@ func (cmc *CommandController) GetTaskSet(ctx *gin.Context) {
 // 	ctx.JSON(http.StatusOK, commands)
 // }
 
-func (cmc *CommandController) RegisterApiRoutes(rg *gin.RouterGroup) {
+func (cmc *ApiController) RegisterApiRoutes(rg *gin.RouterGroup) {
 	apiroute := rg.Group("/api")
 	apiroute.GET("/typingGame", cmc.GetTaskSet)
 	// apiroute.GET("/allCommands", cmc.GetAll)
