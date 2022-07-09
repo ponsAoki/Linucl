@@ -29,14 +29,14 @@ export const TypingGamePage: FC = memo(() => {
     console.log(problem);
     setCorrectCommand(typingGameData[counter].correctCommand);
     console.log(correctFlag);
-    // if (counter !== 0) {
-    //   sleep(1000)
-    //     .then(() => {
-    //       console.log(2000);
-    //       initCorrectFlag();
-    //       console.log(correctFlag);
-    //     })
-    // }
+    if (counter !== 0) {
+      sleep(1000)
+        .then(() => {
+          console.log(2000);
+          initCorrectFlag();
+          console.log(correctFlag);
+        })
+    }
   }, [counter]);
 
   return (

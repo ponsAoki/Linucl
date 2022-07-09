@@ -11,6 +11,7 @@ export const TypingGameScreen: FC<Props> = memo((props) => {
   const { problem, correctCommand, correctFlag, onSubmit: matchingAnswer } = props;
   const ref: RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
   console.log("レンダリングされました！")
+  console.log(correctFlag);
   return (
     <div>
       <h3 className="text-2xl mb-12 text-white">{problem}</h3>
