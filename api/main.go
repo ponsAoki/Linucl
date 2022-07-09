@@ -70,5 +70,3 @@ func main() {
 	//ポート番号8000番に接続
 	log.Fatal(router.Run("localhost:8000"))
 }
-
-//main.goこんなに長くせず、ConnectDB()部分他のファイルに移した方がいいかも
