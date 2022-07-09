@@ -2,16 +2,15 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"time"
 
 	"example.com/go-apis/configs"
 	"example.com/go-apis/controllers"
 	"example.com/go-apis/services"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 var (
@@ -25,35 +24,35 @@ var (
 	// err         error
 )
 
-func ConnectDB() *mongo.Client {
-	//以下、MongoDBAtlasつなぐときの慣例みたいなやつ
-	mongoclient, err := mongo.NewClient(options.Client().ApplyURI(configs.EnvMongoURI()))
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
-	err = mongoclient.Connect(ctx)
-	if err != nil {
-		log.Fatal(err)
-	}
-	err = mongoclient.Ping(ctx, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	fmt.Println("mongo connection established")
-
-	return mongoclient
-
-}
-
 func main() {
 	router := gin.Default()
 
+	router.Use(cors.New(cors.Config{
+		AllowOrigins: []string{"https://localhost:3000"},
+		AllowMethods: []string{"GET"},
+		AllowHeaders: []string{"Access-Control-Allow-Credentials",
+			"Access-Control-Allow-Headers",
+			"Content-Type",
+			"Content-Length",
+			"Accept-Encoding",
+			"Authorization",
+			"Origin",
+			"X-CSRF-Token",
+			"accept",
+			"origin",
+			"Cache-Control",
+			"X-Requested-With",
+		},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		AllowOriginFunc: func(origin string) bool {
+			return origin == "http://localhost:3000"
+		},
+		MaxAge: 12 * time.Hour,
+	}))
+
 	//ConnectDB()で返されたmongoclientをclientに格納
-	client := ConnectDB()
+	client := configs.ConnectDB()
 
 	//ここ重要
 	//golangDBに接続までを初期設定とする
