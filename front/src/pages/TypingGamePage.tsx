@@ -14,21 +14,36 @@ export const TypingGamePage: FC = memo(() => {
   const { typingGameStartFlag, typingGameStartTrigger } = useTypingGameStartTrigger();
   const { typingGameData, getTypingGameData } = useGetTypingGameData();
   const { counter, correctFlag, matchingAnswer, initCorrectFlag } = useMatchingAnswer();
-  const { timeLimit, startTimer } = useStartTimer();
+  const { timeLimit, startTimer, initTimeLimit } = useStartTimer();
   const { sleep } = useSleep();
-  const [problem, setProblem] = useState<string>("");
-  const [correctCommand, setCorrectCommand] = useState<string>("");
+  const [question, setQuestion] = useState<string>("");
+  const [answer, setAnswer] = useState<string>("");
 
   useEffect(() => {
-    getTypingGameData();
+    getTypingGameData()
+      .then((res) => {
+        console.log(res);
+        console.log(1);
+        console.log(typingGameData);
+        // setQuestion(typingGameData[counter].question);
+        // console.log(question);
+        // setAnswer(typingGameData[counter].answer);
+        // console.log(correctFlag);
+      })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
-    setProblem(typingGameData[counter].problem);
-    console.log(problem);
-    setCorrectCommand(typingGameData[counter].correctCommand);
-    console.log(correctFlag);
+    if (counter !== 0) {
+      setQuestion(typingGameData[counter].question);
+      console.log(question);
+      setAnswer(typingGameData[counter].answer);
+      console.log(correctFlag);
+      startTimer();
+    }
+    if (timeLimit <= 0) {
+      initTimeLimit();
+    }
   }, [counter]);
 
   return (
@@ -37,7 +52,7 @@ export const TypingGamePage: FC = memo(() => {
       <div className="bg-zinc-900 py-12">
         <div className="box-border border-4 rounded-3xl outline-none w-2/3 px-8 py-12 mx-auto my-24 text-center shadow-lg shadow-zinc-500 relative">
           {typingGameStartFlag ? (
-            <TypingGameScreen problem={problem} correctCommand={correctCommand} correctFlag={correctFlag} counter={counter} initCorrectFlag={initCorrectFlag} onSubmit={matchingAnswer} />
+            <TypingGameScreen question={question} answer={answer} correctFlag={correctFlag} counter={counter} initCorrectFlag={initCorrectFlag} onSubmit={matchingAnswer} initTimeLimit={initTimeLimit} />
           ) : (
             <TypingGameStartScreen onKeyDown={(e: any) => typingGameStartTrigger(e)} />
           )}

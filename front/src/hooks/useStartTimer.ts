@@ -13,7 +13,11 @@ export const useStartTimer = () => {
         clearInterval(timerId);
       }
     }, 50)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  const initTimeLimit = useCallback(() => {
+    setTimeLimit(10);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  return { timeLimit, startTimer }
+  return { timeLimit, startTimer, initTimeLimit }
 }

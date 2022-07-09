@@ -1,4 +1,4 @@
 export type TypingGameData = {
-  problem: string,
-  correctCommand: string,
+  question: string;
+  answer: string;
 }
