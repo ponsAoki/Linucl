@@ -1,17 +1,35 @@
-import { FC, FormEvent, memo, RefObject, useRef } from "react";
+import { FC, FormEvent, memo, RefObject, useEffect, useRef, useState } from "react";
+import { useSleep } from "../../hooks/useSleep";
 
 type Props = {
   problem: string;
   correctCommand: string;
   correctFlag: boolean | null;
+  counter: number
+  initCorrectFlag: () => void;
   onSubmit: (e: FormEvent<HTMLFormElement>, correctCommand: string, ref: RefObject<HTMLInputElement>) => void;
 }
 
 export const TypingGameScreen: FC<Props> = memo((props) => {
-  const { problem, correctCommand, correctFlag, onSubmit: matchingAnswer } = props;
+  const { problem, correctCommand, correctFlag, counter, initCorrectFlag, onSubmit: matchingAnswer } = props;
+  const { sleep } = useSleep();
   const ref: RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
-  console.log("レンダリングされました！")
+  console.log("レンダリングされました！");
   console.log(correctFlag);
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (counter !== 0) {
+      sleep(1000)
+        .then(() => {
+          console.log(2000);
+          initCorrectFlag();
+          console.log(correctFlag);
+        })
+      }
+    }, 1000);
+  }, [correctFlag]);
+
   return (
     <div>
       <h3 className="text-2xl mb-12 text-white">{problem}</h3>
@@ -25,7 +43,7 @@ export const TypingGameScreen: FC<Props> = memo((props) => {
               <input
                 type="text"
                 name="answer"
-                readOnly={correctFlag ?? false}
+                readOnly={correctFlag ?? false}  // 最初の問題の初期値が" "になってしまう
                 autoFocus={true}
                 autoComplete="off"
                 className="outline-none bg-black text-start text-white w-full text-4xl mr-auto pl-2 overflow-y-hidden"

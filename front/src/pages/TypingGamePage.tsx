@@ -29,14 +29,6 @@ export const TypingGamePage: FC = memo(() => {
     console.log(problem);
     setCorrectCommand(typingGameData[counter].correctCommand);
     console.log(correctFlag);
-    if (counter !== 0) {
-      sleep(1000)
-        .then(() => {
-          console.log(2000);
-          initCorrectFlag();
-          console.log(correctFlag);
-        })
-    }
   }, [counter]);
 
   return (
@@ -45,7 +37,7 @@ export const TypingGamePage: FC = memo(() => {
       <div className="bg-zinc-900 py-12">
         <div className="box-border border-4 rounded-3xl outline-none w-2/3 px-8 py-12 mx-auto my-24 text-center shadow-lg shadow-zinc-500 relative">
           {typingGameStartFlag ? (
-            <TypingGameScreen problem={problem} correctCommand={correctCommand} correctFlag={correctFlag} onSubmit={matchingAnswer} />
+            <TypingGameScreen problem={problem} correctCommand={correctCommand} correctFlag={correctFlag} counter={counter} initCorrectFlag={initCorrectFlag} onSubmit={matchingAnswer} />
           ) : (
             <TypingGameStartScreen onKeyDown={(e: any) => typingGameStartTrigger(e)} />
           )}
