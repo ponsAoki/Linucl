@@ -1,6 +1,7 @@
 import { FC, memo, useEffect } from "react";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 
+// import { QuizAnswerCard } from "../components/atoms/QuizAnswerCard";
 import { Footer, Header } from "../components/organisms/layout";
 import { useGetQuizData } from "../hooks/api/useGetQuizData";
 import { useMatchingQuizAnswer } from "../hooks/useMatchingQuizAnswer";
@@ -25,6 +26,9 @@ export const QuizPage: FC = memo(() => {
           <p className="text-2xl mb-12">{quizQuestion}</p>
           <div>
             {/* 取得するデータの形式が決まったらbuttonをコンポーネント化する */}
+            {/* {quizSelects.map((quizSelect, i) => (
+              <QuizAnswerCard key={quizAnswer} index={i} quizAnswer={quizAnswer} quizSelect={quizSelect} matchingQuizAnswer={matchingQuizAnswer} />
+            ))} */}
             <button
               className="bg-black text-white rounded p-4 hover:opacity-70 font-bold text-2xl m-6 md:mx-6 md:inline block mx-auto"
               onClick={() => matchingQuizAnswer(quizSelects[0], quizAnswer)}
