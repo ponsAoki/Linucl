@@ -8,7 +8,7 @@ export const TypingGameStartScreen: FC<Props> = memo((props) => {
   const { onKeyDown: typingGameStartTrigger } = props;
   return (
     <div className="mx-auto">
-      <p className="text-white absolute top-0 left-0 w-full font-bold">spaceキーを入力するとゲームが開始します!</p>
+      <p className="text-white absolute top-0 left-0 w-full font-bold text-2xl mt-8">spaceキーを入力するとゲームが開始します!</p>
       <input
         name="startInput"
         title="startInput"

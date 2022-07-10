@@ -5,7 +5,7 @@ import { TypingGameEndScreen } from "../components/atoms/TypingGameEndScreen";
 import { TypingGameStartScreen } from "../components/molecules/TypingGameStartScreen";
 import { Footer, Header } from "../components/organisms/layout";
 import { TypingGameScreen } from "../components/organisms/TypingGameScreen";
-import { useGetTypingGameData } from "../hooks/useGetTypingGameData";
+import { useGetTypingGameData } from "../hooks/api/useGetTypingGameData";
 import { useMatchingAnswer } from "../hooks/useMatchingAnswer";
 import { useSleep } from "../hooks/useSleep";
 import { useStartTimer } from "../hooks/useStartTimer";
@@ -36,8 +36,6 @@ export const TypingGamePage: FC = memo(() => {
   }, [])
 
   useEffect(() => {
-    console.log(counter);
-    console.log(typingGameEndFlag);
     if (counter > 0 && counter < typingGameData.length) {
       setQuestion(typingGameData[counter].question);
       console.log(question);
@@ -45,27 +43,17 @@ export const TypingGamePage: FC = memo(() => {
       console.log(correctFlag);
       startTimer();
     }
-    if (timeLimit <= 0) {
-      initTimeLimit();
-    }
+    // if (timeLimit <= 0) {
+    //   initTimeLimit();
+    // }
+    initTimeLimit();
     if (counter >= (10 - 1)) { // 10をtypingGameData.lengthに変換
       console.log("stop");
       setTypingGameEndFlag(true);
     }
   }, [counter]);
 
-  // useEffect(() => {
-  //   console.log(counter);
-  //   setTimeout(() => {
-  //     if (counter >= (typingGameData.length - 1)) {
-  //     sleep(500)
-  //       .then(() => {
-  //         console.log(3000);
-  //         setTypingGameEndFlag(true);
-  //       })
-  //     }
-  //   }, 500);
-  // }, [counter]);
+  console.log("TypingGamePageレンダリングされました。")
 
   return (
     <div className="overflow-x-hidden">

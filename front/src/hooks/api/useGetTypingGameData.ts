@@ -1,8 +1,8 @@
 import axios from "axios"
 import { useCallback, useState } from "react"
 
-import { apiEndpoint } from "../services/apiEndpoint"
-import { TypingGameData } from "../types/typingGameData";
+import { apiEndpoint } from "../../services/apiEndpoint"
+import { TypingGameData } from "../../types/typingGameData";
 
 export const useGetTypingGameData = () => {
   const [typingGameData, setTypingGameData] = useState<Array<TypingGameData>>([]);
