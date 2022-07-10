@@ -1,16 +1,17 @@
 import { FC, memo, useEffect } from "react";
 
 import { Footer, Header } from "../components/organisms/layout";
-import { useGetQuizData } from "../hooks/useGetQuizData";
+import { useGetQuizData } from "../hooks/api/useGetQuizData";
+import { useMatchingQuizAnswer } from "../hooks/useMatchingQuizAnswer";
 import { useStartTimer } from "../hooks/useStartTimer";
 
 export const QuizPage: FC = memo(() => {
-  const { getQuizData } = useGetQuizData();
+  const { quizQuestion, quizAnswer, quizSelects, getQuizData } = useGetQuizData();
   const { timeLimit, startTimer } = useStartTimer();
+  const { matchingQuizAnswer } = useMatchingQuizAnswer();
 
   useEffect(() => {
     getQuizData()
-      .then(() => startTimer());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -19,43 +20,43 @@ export const QuizPage: FC = memo(() => {
       <Header />
       <div className="bg-gray-100 py-16">
         <div className="box-border border-4 rounded-lg outline-none w-2/3 px-8 py-12 mx-auto my-24 text-center">
-          <p className="text-2xl mb-12">テスト問題文</p>
+          <p className="text-2xl mb-12">{quizQuestion}</p>
           <div>
             {/* 取得するデータの形式が決まったらbuttonをコンポーネント化する */}
             <button
               className="bg-black text-white rounded p-4 hover:opacity-70 font-bold text-2xl m-6 md:mx-6 md:inline block mx-auto"
-              onClick={() => console.log(1)}
+              onClick={() => matchingQuizAnswer(quizSelects[0], quizAnswer)}
             >
               <div className="flex w-96">
                 <span className="">1.</span>
-                <span className="mx-auto">mkdir</span>
+                <span className="mx-auto">{quizSelects[0]}</span>
               </div>
             </button>
             <button
               className="bg-black text-white rounded p-4 hover:opacity-70 font-bold text-2xl m-6 md:mx-6 md:inline block mx-auto"
-              onClick={() => console.log(2)}
+              onClick={() => matchingQuizAnswer(quizSelects[1], quizAnswer)}
             >
               <div className="flex w-96">
                 <span className="">2.</span>
-                <span className="mx-auto">cat</span>
+                <span className="mx-auto">{quizSelects[1]}</span>
               </div>
             </button>
             <button
               className="bg-black text-white rounded p-4 hover:opacity-70 font-bold text-2xl m-6 md:mx-6 md:inline block mx-auto"
-              onClick={() => console.log(3)}
+              onClick={() => matchingQuizAnswer(quizSelects[2], quizAnswer)}
             >
               <div className="flex w-96">
                 <span className="">3.</span>
-                <span className="mx-auto">touch</span>
+                <span className="mx-auto">{quizSelects[2]}</span>
               </div>
             </button>
             <button
               className="bg-black text-white rounded p-4 hover:opacity-70 font-bold text-2xl m-6 md:mx-6 md:inline block mx-auto"
-              onClick={() => console.log(4)}
+              onClick={() => matchingQuizAnswer(quizSelects[3], quizAnswer)}
             >
               <div className="flex w-96">
                 <span className="">4.</span>
-                <span className="mx-auto">less</span>
+                <span className="mx-auto">{quizSelects[3]}</span>
               </div>
             </button>
           </div>
