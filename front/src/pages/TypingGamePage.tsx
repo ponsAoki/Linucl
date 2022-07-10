@@ -1,6 +1,7 @@
 import { FC, memo, useEffect, useState } from "react";
 
 import { TimeBar } from "../components/atoms/TimeBar";
+import { TypingGameEndScreen } from "../components/atoms/TypingGameEndScreen";
 import { TypingGameStartScreen } from "../components/molecules/TypingGameStartScreen";
 import { Footer, Header } from "../components/organisms/layout";
 import { TypingGameScreen } from "../components/organisms/TypingGameScreen";
@@ -18,6 +19,7 @@ export const TypingGamePage: FC = memo(() => {
   const { sleep } = useSleep();
   const [question, setQuestion] = useState<string>("");
   const [answer, setAnswer] = useState<string>("");
+  const [typingGameEndFlag, setTypingGameEndFlag] = useState<boolean>(false);
 
   useEffect(() => {
     getTypingGameData()
@@ -34,7 +36,9 @@ export const TypingGamePage: FC = memo(() => {
   }, [])
 
   useEffect(() => {
-    if (counter !== 0) {
+    console.log(counter);
+    console.log(typingGameEndFlag);
+    if (counter > 0 && counter < typingGameData.length) {
       setQuestion(typingGameData[counter].question);
       console.log(question);
       setAnswer(typingGameData[counter].answer);
@@ -44,7 +48,24 @@ export const TypingGamePage: FC = memo(() => {
     if (timeLimit <= 0) {
       initTimeLimit();
     }
+    if (counter >= (10 - 1)) { // 10をtypingGameData.lengthに変換
+      console.log("stop");
+      setTypingGameEndFlag(true);
+    }
   }, [counter]);
+
+  // useEffect(() => {
+  //   console.log(counter);
+  //   setTimeout(() => {
+  //     if (counter >= (typingGameData.length - 1)) {
+  //     sleep(500)
+  //       .then(() => {
+  //         console.log(3000);
+  //         setTypingGameEndFlag(true);
+  //       })
+  //     }
+  //   }, 500);
+  // }, [counter]);
 
   return (
     <div className="overflow-x-hidden">
@@ -52,7 +73,13 @@ export const TypingGamePage: FC = memo(() => {
       <div className="bg-zinc-900 py-12">
         <div className="box-border border-4 rounded-3xl outline-none w-2/3 px-8 py-12 mx-auto my-24 text-center shadow-lg shadow-zinc-500 relative">
           {typingGameStartFlag ? (
-            <TypingGameScreen question={question} answer={answer} correctFlag={correctFlag} counter={counter} initCorrectFlag={initCorrectFlag} onSubmit={matchingAnswer} initTimeLimit={initTimeLimit} />
+            <div>
+            {typingGameEndFlag ? (
+              <TypingGameEndScreen />
+            ) : (
+              <TypingGameScreen question={question} answer={answer} correctFlag={correctFlag} counter={counter} initCorrectFlag={initCorrectFlag} onSubmit={matchingAnswer} initTimeLimit={initTimeLimit} />
+              )}
+              </div>
           ) : (
             <TypingGameStartScreen onKeyDown={(e: any) => typingGameStartTrigger(e)} />
           )}
