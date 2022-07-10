@@ -16,3 +16,12 @@ func EnvMongoURI() string {
 
 	return os.Getenv("MONGOURI")
 }
+
+func EnvBackPort() string {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
+	return os.Getenv("BACK-PORT")
+}
