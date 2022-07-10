@@ -1,4 +1,5 @@
 import { FC, memo, useEffect } from "react";
+import { NavigateFunction, useNavigate } from "react-router-dom";
 
 import { Footer, Header } from "../components/organisms/layout";
 import { useGetQuizData } from "../hooks/api/useGetQuizData";
@@ -8,18 +9,19 @@ import { useStartTimer } from "../hooks/useStartTimer";
 export const QuizPage: FC = memo(() => {
   const { quizQuestion, quizAnswer, quizSelects, getQuizData } = useGetQuizData();
   const { timeLimit, startTimer } = useStartTimer();
-  const { matchingQuizAnswer } = useMatchingQuizAnswer();
+  const { quizDataReloadFlag, matchingQuizAnswer } = useMatchingQuizAnswer();
+  let navigate: NavigateFunction = useNavigate();
 
   useEffect(() => {
     getQuizData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [quizDataReloadFlag, matchingQuizAnswer])
 
   return (
     <div className="overflow-x-hidden">
       <Header />
       <div className="bg-gray-100 py-16">
-        <div className="box-border border-4 rounded-lg outline-none w-2/3 px-8 py-12 mx-auto my-24 text-center">
+        <div className="box-border border-4 rounded-lg outline-none w-2/3 px-8 py-12 mx-auto mt-24 mb-12 text-center">
           <p className="text-2xl mb-12">{quizQuestion}</p>
           <div>
             {/* 取得するデータの形式が決まったらbuttonをコンポーネント化する */}
@@ -69,6 +71,14 @@ export const QuizPage: FC = memo(() => {
               className="bg-blue-500 rounded h-6"
             />
           </div>
+        </div>
+        <div className="text-center">
+          <button
+            className="text-white font-bold w-48 rounded-lg bg-sky-400 hover:bg-sky-500 px-4 py-2 shadow-sky2 opacity-90 hover:opacity-100"
+            onClick={() => navigate("/home")}
+          >
+            終了する
+          </button>
         </div>
       </div>
       <Footer />
