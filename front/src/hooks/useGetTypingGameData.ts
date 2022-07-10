@@ -5,16 +5,15 @@ import { apiEndpoint } from "../services/apiEndpoint"
 import { TypingGameData } from "../types/typingGameData";
 
 export const useGetTypingGameData = () => {
-  const [problem, setProblem] = useState<string>("テスト問題文");  // 一時的に初期値を設定
-  const [correctCommand, setCorrectCommand] = useState<string>("test");  // 一時的に初期値を設定
-  const getTypingGameData = useCallback( async (): Promise<void> => {
-    await axios.get<TypingGameData>(`${apiEndpoint}/api/typingGame`)
+  const [typingGameData, setTypingGameData] = useState<Array<TypingGameData>>([]);
+  const getTypingGameData = useCallback(async (): Promise<Array<TypingGameData>> => {
+    await axios.get<Array<TypingGameData>>(`${apiEndpoint}/v1/api/typingGame`)
       .then((res) => {
         console.log(res.data);
-        setProblem(res.data.problem);
-        setCorrectCommand(res.data.problem);
+        setTypingGameData(res.data);
       })
       .catch((err) => console.log(err));
+    return typingGameData;
   }, [])
-  return { problem, correctCommand, getTypingGameData }
+  return { typingGameData, getTypingGameData }
 }
