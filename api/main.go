@@ -28,7 +28,7 @@ func main() {
 	router := gin.Default()
 
 	router.Use(cors.New(cors.Config{
-		AllowOrigins: []string{"https://localhost:3000"},
+		AllowOrigins: []string{"http://localhost:3000"},
 		AllowMethods: []string{"GET"},
 		AllowHeaders: []string{"Access-Control-Allow-Credentials",
 			"Access-Control-Allow-Headers",
@@ -68,5 +68,5 @@ func main() {
 	apiconrtoller.RegisterApiRoutes(basepath)
 
 	//ポート番号8000番に接続
-	log.Fatal(router.Run("localhost:8000"))
+	log.Fatal(router.Run("localhost:" + configs.EnvBackPort()))
 }
