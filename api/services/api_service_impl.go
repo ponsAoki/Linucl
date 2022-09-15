@@ -7,21 +7,21 @@ import (
 	"math/rand"
 	"time"
 
+	"example.com/go-apis/configs"
 	"example.com/go-apis/models"
 	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/mongo"
 )
 
-func NewApiService(connectedDB *mongo.Database, ctx context.Context) ApiService {
+func NewApiService(ctx context.Context) ApiService {
 	return &ApiServiceImpl{
-		connectedDB: connectedDB,
-		ctx:         ctx,
+		// connectedDB: connectedDB,
+		ctx: ctx,
 	}
 }
 
 type ApiServiceImpl struct {
-	connectedDB *mongo.Database
-	ctx         context.Context
+	// connectedDB *mongo.Database
+	ctx context.Context
 }
 
 //タイピングの問題セット取得してくる
@@ -30,7 +30,7 @@ func (cm *ApiServiceImpl) GetTaskSet(collection *string) ([]*models.Task, error)
 	var tasks []*models.Task
 
 	//ランダムなコレクションから全件取得
-	cursor, err := cm.connectedDB.Collection(*collection).Find(cm.ctx, bson.D{})
+	cursor, err := configs.OpenCollection(configs.Client, *collection).Find(cm.ctx, bson.D{})
 	if err != nil {
 		return nil, err
 	}
@@ -70,7 +70,7 @@ func (cm *ApiServiceImpl) GetQuizSet(collection *string) ([]*string, *models.Qui
 
 	//ランダムなコレクションからランダムに4つ取得
 	pipeline := []bson.D{bson.D{{"$sample", bson.D{{"size", 4}}}}}
-	cursor, err := cm.connectedDB.Collection(*collection).Aggregate(context.Background(), pipeline)
+	cursor, err := configs.OpenCollection(configs.Client, *collection).Aggregate(context.Background(), pipeline)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -115,40 +115,3 @@ func (cm *ApiServiceImpl) GetQuizSet(collection *string) ([]*string, *models.Qui
 
 	return selects, selectedQuiz, nil
 }
-
-//以前の全件取得
-// func (cm *CommandServiceImpl) GetAll() ([]*models.Command, error) {
-// 	var commands []*models.Command
-// 	cursor, err := cm.commandcollection.Find(cm.ctx, bson.D{})
-// 	if err != nil {
-// 		return nil, err
-// 	}
-// 	// fmt.Printf("%s\n", *cursor)
-
-// 	//cursor.Next()で1つ1つのデータに対して処理していく
-// 	//コマンド1つ1つを新しいスライスに格納していく
-// 	for cursor.Next(cm.ctx) {
-// 		var command models.Command
-// 		err := cursor.Decode(&command)
-// 		if err != nil {
-// 			return nil, err
-// 		}
-// 		commands = append(commands, &command)
-// 	}
-
-// 	//上記のforで反復中にエラーが生じたときの処理
-// 	if err := cursor.Err(); err != nil {
-// 		return nil, err
-// 	}
-
-// 	cursor.Close(cm.ctx)
-
-// 	if len(commands) == 0 {
-// 		return nil, errors.New("documents not found")
-// 	}
-
-// 	results, _ := json.Marshal(commands)
-// 	fmt.Print(commands)
-// 	fmt.Printf("%s\n", results)
-// 	return commands, nil
-// }

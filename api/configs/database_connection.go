@@ -33,3 +33,10 @@ func ConnectDB() *mongo.Client {
 	return mongoclient
 
 }
+
+var Client *mongo.Client = ConnectDB()
+
+func OpenCollection(client *mongo.Client, collectionName string) *mongo.Collection {
+	var collecion *mongo.Collection = client.Database("golangDB").Collection(collectionName)
+	return collecion
+}
