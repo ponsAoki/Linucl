@@ -52,12 +52,12 @@ func main() {
 	}))
 
 	//ConnectDB()で返されたmongoclientをclientに格納
-	client := configs.ConnectDB()
+	// client := configs.ConnectDB()
 
 	//ここ重要
 	//golangDBに接続までを初期設定とする
-	connectedDB = client.Database("golangDB")
-	apiservice = services.NewApiService(connectedDB, ctx)
+	// connectedDB = client.Database("golangDB")
+	apiservice = services.NewApiService(ctx)
 	apiconrtoller = controllers.New(apiservice)
 
 	//これよく解ってない
