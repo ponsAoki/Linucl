@@ -10,9 +10,9 @@ export const HomePage: FC = memo(() => {
         <div className="bg-zinc-900 py-12">
           <ul>
             <li>
-            <LessonBox outline="レベル1" content="アプリケーション開発中に頻繁に使用するコマンド" />
-            <LessonBox outline="レベル2" content="覚えておくと便利なコマンド" />
-            <LessonBox outline="レベル3" content="上級レベルのコマンド" />
+            <LessonBox level="レベル1" content="アプリケーション開発中に頻繁に使用するコマンド" />
+            <LessonBox level="レベル2" content="覚えておくと便利なコマンド" />
+            <LessonBox level="レベル3" content="上級レベルのコマンド" />
             </li>
           </ul>
         </div>

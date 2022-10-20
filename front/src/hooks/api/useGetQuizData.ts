@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useCallback, useState } from "react"
 
-import { apiEndpoint } from "../../services/apiEndpoint";
+import { apiEndPoint } from "../../services/apiEndpoint";
 import { QuizData } from "../../types/quizData";
 
 export const useGetQuizData = () => {
@@ -9,7 +9,7 @@ export const useGetQuizData = () => {
   const [quizAnswer, setQuizAnswer] = useState<string>("");
   const [quizSelects, setQuizSelects] = useState<Array<string>>([]);
   const getQuizData = useCallback( async (): Promise<void> => {
-    await axios.get<QuizData>(`${apiEndpoint}/v1/api/quiz`)
+    await axios.get<QuizData>(`${apiEndPoint}/v1/api/quiz`)
       .then((res) => {
         setQuizQuestion(res.data.QAset.question);
         setQuizAnswer(res.data.QAset.answer);

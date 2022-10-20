@@ -2,16 +2,16 @@ import { FC, memo } from "react";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 
 type Props = {
-  outline: string;
+  level: string;
   content: string;
 }
 
 export const LessonBox: FC<Props> = memo((props) => {
-  const { outline, content } = props;
+  const { level, content } = props;
   let navigate: NavigateFunction = useNavigate();
   return (
     <div className="box-border border-4 rounded-lg outline-none w-1/2 mx-auto my-16 text-white text-center shadow-lg shadow-zinc-500">
-      <h3 className="text-3xl font-bold my-6">{outline}</h3>
+      <h3 className="text-3xl font-bold my-6">{level}</h3>
       <p className="px-8 my-6">{content}</p>
       <div className="flex justify-around my-6">
         <button
