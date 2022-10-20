@@ -23,7 +23,7 @@ export const TopPage: FC = memo(() => {
               <li className="my-8">
                 <button
                   className="text-white font-black text-lg w-48 rounded-lg bg-yellow-400 shadow-yellow1 px-4 py-2 mb-4 hover:bg-yellow-500 hover:shadow-yellow2"
-                  onClick={() => navigate("#")}
+                  onClick={() => navigate("/sign-in")}
                 >
                   ログイン
                 </button>
@@ -39,7 +39,7 @@ export const TopPage: FC = memo(() => {
             </ul>
             <div className="text-white mt-20">
               登録は
-                <Link to="#" className="text-blue-500 hover:opacity-80">こちら</Link>
+                <Link to="/sign-up" className="text-blue-500 hover:opacity-80">こちら</Link>
             </div>
           </div>
         </div>

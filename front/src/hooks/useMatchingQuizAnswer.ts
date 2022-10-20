@@ -6,10 +6,8 @@ export const useMatchingQuizAnswer = () => {
   const matchingQuizAnswer = useCallback((quizQuestion: string, quizAnswer: string) => {
     setQuizDataReloadFlag((prevstate) => !prevstate)
     if (quizQuestion === quizAnswer) {
-      console.log(true);
       setQuizCorrectFlag(true);
     } else {
-      console.log(false);
       setQuizCorrectFlag(false);
     }
   }, []);
